@@ -1,4 +1,4 @@
-package org.oobootcamp.core.count_out;
+package org.oobootcamp.core.countout;
 
 public class FizzBuzz {
     public String generateOutputData(int number) {

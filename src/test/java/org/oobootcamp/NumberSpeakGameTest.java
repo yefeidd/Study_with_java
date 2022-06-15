@@ -1,9 +1,7 @@
 package org.oobootcamp;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.oobootcamp.core.count_out.FizzBuzz;
+import org.oobootcamp.core.countout.FizzBuzz;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
