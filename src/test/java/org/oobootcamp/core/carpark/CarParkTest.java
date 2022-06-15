@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class CarParkTest {
     @Test
     void should_return_a_key_when_park_a_car_given_have_left_space() {
