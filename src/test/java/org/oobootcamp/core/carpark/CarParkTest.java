@@ -3,12 +3,13 @@ package org.oobootcamp.core.carpark;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.oobootcamp.core.carpark.CarPackName.ONE;
 
 public class CarParkTest {
     @Test
     void should_return_a_ticket_when_park_a_car_given_have_left_space() {
         // given
-        CarPark carPark = new CarPark(3);
+        CarPark carPark = new CarPark(ONE, 3);
         Car car = new Car();
 
         // when
@@ -22,7 +23,7 @@ public class CarParkTest {
     @Test
     void should_return_full_pack_when_park_a_car_given_no_left_space() {
         // given
-        CarPark carPark = new CarPark(2);
+        CarPark carPark = new CarPark(ONE, 2);
         carPark.requestParkCar(new Car());
         carPark.requestParkCar(new Car());
         Car myCar = new Car();
@@ -38,7 +39,7 @@ public class CarParkTest {
     @Test
     void should_return_my_car_when_get_a_car_given_a_right_ticket() {
         // given
-        CarPark carPark = new CarPark(2);
+        CarPark carPark = new CarPark(ONE, 2);
         Car myCar = new Car();
         Ticket ticket = (Ticket) carPark.requestParkCar(myCar);
 
@@ -52,7 +53,7 @@ public class CarParkTest {
     @Test
     void should_can_not_get_car_when_get_a_car_given_an_invalid_ticket() {
         // given
-        CarPark carPark = new CarPark(2);
+        CarPark carPark = new CarPark(ONE, 2);
         Car myCar = new Car();
         carPark.requestParkCar(myCar);
 

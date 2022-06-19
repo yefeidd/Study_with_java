@@ -6,10 +6,12 @@ import java.util.Map;
 public class CarPark {
     private Map<CarPackResult, Car> carList;
     private int count = 0;
+    private CarPackName carPackName;
 
-    CarPark(int count) {
+    CarPark(CarPackName carPackName, int count) {
         this.count = count;
         this.carList = new HashMap<>(count);
+        this.carPackName = carPackName;
     }
 
     public CarPackResult requestParkCar(Car car) {
