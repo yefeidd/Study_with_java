@@ -6,73 +6,61 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CarParkTest {
     @Test
-    void should_return_a_key_when_park_a_car_given_have_left_space() {
+    void should_return_a_ticket_when_park_a_car_given_have_left_space() {
         // given
         CarPark carPark = new CarPark(3);
-        String carNumber = "123456";
+        Car car = new Car();
 
         // when
-        Integer expected = carNumber.hashCode();
-        Integer actual = carPark.requestParkCar(carNumber);
+        CarPackResult result = carPark.requestParkCar(car);
 
         // then
-        assertThat(actual).isEqualTo(expected);
+        assertThat(result).isNotNull();
+        assertThat(result).isInstanceOf(Ticket.class);
     }
 
     @Test
-    void should_return_failed_when_park_a_car_given_no_left_space() {
+    void should_return_full_pack_when_park_a_car_given_no_left_space() {
         // given
         CarPark carPark = new CarPark(2);
-        carPark.requestParkCar("1");
-        carPark.requestParkCar("2");
-        String carNumber = "1234562";
+        carPark.requestParkCar(new Car());
+        carPark.requestParkCar(new Car());
+        Car myCar = new Car();
 
         // when
-        Integer actual = carPark.requestParkCar(carNumber);
+        CarPackResult result = carPark.requestParkCar(myCar);
 
         // then
-        assertThat(actual).isNull();
+        assertThat(result).isNotNull();
+        assertThat(result).isInstanceOf(FullPackTips.class);
     }
 
     @Test
-    void should_return_failed_when_get_a_car_given_not_key() {
+    void should_return_my_car_when_get_a_car_given_a_right_ticket() {
         // given
         CarPark carPark = new CarPark(2);
-        String carNumber = "1234562";
-        carPark.requestParkCar(carNumber);
+        Car myCar = new Car();
+        Ticket ticket = (Ticket) carPark.requestParkCar(myCar);
 
         // when
-        String actual = carPark.getCar(null);
+        Car car = carPark.getCar(ticket);
 
         // then
-        assertThat(actual).isNull();
+        assertThat(car).isEqualTo(myCar);
     }
 
     @Test
-    void should_return_a_car_when_get_a_car_given_a_key() {
+    void should_can_not_get_car_when_get_a_car_given_an_invalid_ticket() {
         // given
         CarPark carPark = new CarPark(2);
-        String carNumber = "1234562";
-        carPark.requestParkCar(carNumber);
+        Car myCar = new Car();
+        carPark.requestParkCar(myCar);
 
         // when
-        String actual = carPark.getCar(carNumber.hashCode());
+        Ticket invalidTicket = new Ticket();
+        Car car = carPark.getCar(invalidTicket);
 
         // then
-        assertThat(actual).isEqualTo(carNumber);
-    }
-
-    @Test
-    void should_return_failed_when_get_a_car_given_an_error_key() {
-        // given
-        CarPark carPark = new CarPark(2);
-        String carNumber = "1234562";
-        carPark.requestParkCar(carNumber);
-
-        // when
-        String actual = carPark.getCar("111".hashCode());
-
-        // then
-        assertThat(actual).isNull();
+        assertThat(car).isNull();
     }
 }

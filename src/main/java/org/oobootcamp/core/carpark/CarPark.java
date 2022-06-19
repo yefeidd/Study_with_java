@@ -4,19 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CarPark {
-    Map<Integer, String> carList;
+    private Map<CarPackResult, Car> carList;
+    private int count = 0;
 
     CarPark(int count) {
-        carList = new HashMap<>(count);
+        this.count = count;
+        this.carList = new HashMap<>(count);
     }
 
-    public Integer requestParkCar(String carNumber) {
-        if (carList.size() == 2) return null;
-        carList.put(carNumber.hashCode(), carNumber);
-        return carNumber.hashCode();
+    public CarPackResult requestParkCar(Car car) {
+        if (carList.size() == count) return new FullPackTips();
+        Ticket ticket = new Ticket();
+        carList.put(ticket, car);
+        return ticket;
     }
 
-    public String getCar(Integer key) {
-        return carList.get(key);
+    public Car getCar(Ticket ticket) {
+        return carList.get(ticket);
     }
 }
