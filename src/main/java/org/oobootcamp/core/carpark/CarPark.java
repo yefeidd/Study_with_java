@@ -15,10 +15,14 @@ public class CarPark {
     }
 
     public CarPackResult requestParkCar(Car car) {
-        if (carList.size() == count) return new FullPackTips();
-        Ticket ticket = new Ticket();
+        if (isParkFull()) return new FullPackTips();
+        Ticket ticket = new Ticket(carPackName);
         carList.put(ticket, car);
         return ticket;
+    }
+
+    public boolean isParkFull() {
+        return carList.size() == count;
     }
 
     public Car getCar(Ticket ticket) {

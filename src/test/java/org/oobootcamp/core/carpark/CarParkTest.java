@@ -58,7 +58,7 @@ public class CarParkTest {
         carPark.requestParkCar(myCar);
 
         // when
-        Ticket invalidTicket = new Ticket();
+        Ticket invalidTicket = new Ticket(ONE);
         Car car = carPark.getCar(invalidTicket);
 
         // then

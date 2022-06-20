@@ -1,4 +1,4 @@
 package org.oobootcamp.core.carpark;
 
-public class Car {
+public class Car implements CarGetResult {
 }
