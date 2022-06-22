@@ -1,12 +1,13 @@
 package org.oobootcamp.core.carpark;
 
 import org.junit.jupiter.api.Test;
+import org.oobootcamp.carpark.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.oobootcamp.core.carpark.CarPackName.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GraduateParkingBoyTest {
     /**
@@ -54,135 +55,96 @@ public class GraduateParkingBoyTest {
      **/
 
 
-    /**
-     * ###AC： 三个停车场有空位，小弟在一号停车场停车成功
-     * Example
-     * Given 有人来停车, 三个停车场有空位, When 停车 ,Then 在一号停车场停车成功, 返回停车票
-     */
     @Test
-    void should_get_a_ticket_and_current_parking_name_is_ONE_when_park_a_car_given_3_car_parks_and_all_have_lef_space() {
+    void should_get_a_ticket_when_park_a_car_given_three_car_parks_and_some_have_lef_space() {
         // given
-        ArrayList<CarPark> carParks = new ArrayList<>(Arrays.asList(new CarPark(ONE, 1), new CarPark(TWO, 1), new CarPark(THREE, 1)));
-        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(carParks);
+        ParkingLot parkingLotA = new ParkingLot(1);
+        ArrayList<ParkingLot> parkingLots = new ArrayList<>(Arrays.asList(parkingLotA, new ParkingLot(1), new ParkingLot(1)));
+        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(parkingLots);
 
         Car myCar = new Car();
 
         // when
-        Ticket ticket = (Ticket) graduateParkingBoy.requestParkCar(myCar);
+        Ticket ticket = graduateParkingBoy.park(myCar);
 
         // then
-        assertThat(ticket.carPackName).isEqualTo(ONE);
+        assertThat(parkingLotA.pickUp(ticket)).isSameAs(myCar);
     }
 
-    /*
-     * ###AC：仅有二三号停车场有空位，小弟在二号停车场停车成功
-     * - Example
-     * - Given 有人来停车, 仅有二三号停车场有空位, When 停车 ,Then 在二号停车场停车成功, 返回停车票
-     */
     @Test
-    void should_get_a_ticket_and_current_parking_name_is_TWO_when_park_a_car_given_3_car_parks_and_just_2_and_3_have_lef_space() {
+    void should_get_a_ticket_when_park_a_car_given_two_car_parks_and_the_second_have_lef_space() {
         // given
-        ArrayList<CarPark> carParks = new ArrayList<>(Arrays.asList(new CarPark(ONE, 1), new CarPark(TWO, 1), new CarPark(THREE, 1)));
-        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(carParks);
-        Car otherCar = new Car();
-        graduateParkingBoy.requestParkCar(otherCar);
+        ParkingLot parkingLotTwo = new ParkingLot(1);
+        ArrayList<ParkingLot> parkingLots = new ArrayList<>(Arrays.asList(new ParkingLot(1), parkingLotTwo));
+        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(parkingLots);
+        graduateParkingBoy.park(new Car());
 
         Car myCar = new Car();
 
         // when
-        Ticket ticket = (Ticket) graduateParkingBoy.requestParkCar(myCar);
+        Ticket ticket = graduateParkingBoy.park(myCar);
 
         // then
-        assertThat(ticket.carPackName).isEqualTo(TWO);
+        assertThat(parkingLotTwo.pickUp(ticket)).isSameAs(myCar);
     }
 
-    /*
-     * ###AC：仅有三号停车场有空位，小弟在三号停车场停车成功
-     * - Example
-     * - Given 有人来停车, 仅有三号停车场有空位, When 停车 ,Then 在三号停车场停车成功, 返回停车票
-     */
-    @Test
-    void should_get_a_ticket_and_current_parking_name_is_THREE_when_park_a_car_given_3_car_parks_and_just_3_have_lef_space() {
-        // given
-        ArrayList<CarPark> carParks = new ArrayList<>(Arrays.asList(new CarPark(ONE, 1), new CarPark(TWO, 1), new CarPark(THREE, 1)));
-        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(carParks);
-        graduateParkingBoy.requestParkCar(new Car());
-        graduateParkingBoy.requestParkCar(new Car());
-
-        Car myCar = new Car();
-
-        // when
-        Ticket ticket = (Ticket) graduateParkingBoy.requestParkCar(myCar);
-
-        // then
-        assertThat(ticket.carPackName).isEqualTo(THREE);
-    }
-
-    /*
-     * ###AC：车位已满，小弟无法停车
-     * - Example
-     * - Given 有人来停车, 车位已满, When 停车 ,Then 给出车位已满的提示
-     */
     @Test
     void should_get_a_full_pack_tips_when_pack_a_car_given_car_park_full() {
-
         // given
-        ArrayList<CarPark> carParks = new ArrayList<>(Arrays.asList(new CarPark(ONE, 1), new CarPark(TWO, 1), new CarPark(THREE, 1)));
-        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(carParks);
-        graduateParkingBoy.requestParkCar(new Car());
-        graduateParkingBoy.requestParkCar(new Car());
-        graduateParkingBoy.requestParkCar(new Car());
+        ArrayList<ParkingLot> parkingLots = new ArrayList<>(Arrays.asList(new ParkingLot(1), new ParkingLot(1), new ParkingLot(1)));
+        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(parkingLots);
+        graduateParkingBoy.park(new Car());
+        graduateParkingBoy.park(new Car());
+        graduateParkingBoy.park(new Car());
 
         // when
         Car myCar = new Car();
-        CarPackResult result = graduateParkingBoy.requestParkCar(myCar);
 
         // then
-        assertThat(result).isInstanceOf(FullPackTips.class);
+        assertThrows(FullParkException.class, () -> graduateParkingBoy.park(myCar));
     }
 
-    /*
-     * ###AC：有无效停车票无法取车
-     * - Example
-     * - Given 有人来，有有效停车票,
-     * - When 取车,
-     * - Then 取车失败
-     */
+
     @Test
-    void should_get_an_invalid_tick_tips_when_pack_a_car_given_an_invalid_ticket() {
+    void should_get_an_invalid_tick_exception_when_pack_a_car_given_an_invalid_ticket() {
         // given
-        ArrayList<CarPark> carParks = new ArrayList<>(Arrays.asList(new CarPark(ONE, 1), new CarPark(TWO, 1), new CarPark(THREE, 1)));
-        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(carParks);
-        graduateParkingBoy.requestParkCar(new Car());
+        ArrayList<ParkingLot> parkingLots = new ArrayList<>(Arrays.asList(new ParkingLot(1), new ParkingLot(1), new ParkingLot(1)));
+        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(parkingLots);
+        graduateParkingBoy.park(new Car());
 
         // when
-        Ticket invalidTicket = new Ticket(ONE);
-        CarGetResult result = graduateParkingBoy.getCar(invalidTicket);
+        Ticket invalidTicket = new Ticket();
 
         // then
-        assertThat(result).isInstanceOf(InvalidTicketTips.class);
+        assertThrows(InvalidTicketException.class, () -> graduateParkingBoy.pickUp(invalidTicket));
     }
 
-    /*
-     * ###AC：使用有效停车票取车成功
-     * - Example
-     * - Given 有人来，使用有效停车票,
-     * - When 取车,
-     * - Then 取车成功
-     */
+
+    @Test
+    void should_get_an_invalid_tick_exception_when_pack_a_car_given_a_used_ticket() {
+        // given
+        ArrayList<ParkingLot> parkingLots = new ArrayList<>(Arrays.asList(new ParkingLot(1), new ParkingLot(1), new ParkingLot(1)));
+        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(parkingLots);
+        Ticket ticket = graduateParkingBoy.park(new Car());
+        graduateParkingBoy.pickUp(ticket);
+
+        // when
+        // then
+        assertThrows(InvalidTicketException.class, () -> graduateParkingBoy.pickUp(ticket));
+    }
+
     @Test
     void should_get_a_car_when_get_car_given_a_valid_ticket() {
         // given
-        ArrayList<CarPark> carParks = new ArrayList<>(Arrays.asList(new CarPark(ONE, 1), new CarPark(TWO, 1), new CarPark(THREE, 1)));
-        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(carParks);
+        ArrayList<ParkingLot> parkingLots = new ArrayList<>(Arrays.asList(new ParkingLot(1), new ParkingLot(1), new ParkingLot(1)));
+        GraduateParkingBoy graduateParkingBoy = new GraduateParkingBoy(parkingLots);
         Car myCar = new Car();
-        Ticket ticket = (Ticket) graduateParkingBoy.requestParkCar(myCar);
+        Ticket ticket = graduateParkingBoy.park(myCar);
 
         // when
-        Car car = (Car) graduateParkingBoy.getCar(ticket);
+        Car car = graduateParkingBoy.pickUp(ticket);
 
         // then
-        assertThat(car).isEqualTo(myCar);
-
+        assertThat(car).isSameAs(myCar);
     }
 }
