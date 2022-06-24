@@ -1,4 +1,4 @@
-package org.oobootcamp.carpark;
+package org.oobootcamp.core.carpark;
 
 import java.util.HashMap;
 import java.util.Map;

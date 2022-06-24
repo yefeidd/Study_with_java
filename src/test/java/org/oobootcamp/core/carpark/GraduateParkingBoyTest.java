@@ -1,7 +1,6 @@
 package org.oobootcamp.core.carpark;
 
 import org.junit.jupiter.api.Test;
-import org.oobootcamp.carpark.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

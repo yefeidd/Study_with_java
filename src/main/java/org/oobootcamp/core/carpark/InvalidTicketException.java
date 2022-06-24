@@ -1,4 +1,4 @@
-package org.oobootcamp.carpark;
+package org.oobootcamp.core.carpark;
 
 public class InvalidTicketException extends RuntimeException {
 }
