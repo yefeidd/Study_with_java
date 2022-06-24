@@ -3,7 +3,12 @@ package org.oobootcamp.core.carpark;
 
 import java.util.List;
 
-public record GraduateParkingBoy(List<ParkingLot> parkingLots) {
+public class GraduateParkingBoy {
+    protected List<ParkingLot> parkingLots;
+
+    GraduateParkingBoy(List<ParkingLot> parkingLots) {
+        this.parkingLots = parkingLots;
+    }
 
     public Ticket park(Car car) throws FullParkException {
         for (ParkingLot parkingLot : parkingLots) {
